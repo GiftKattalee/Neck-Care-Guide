@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>คู่มือดูแลกระดูกคอ</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&family=Prompt:wght@500;600&display=swap">
+<style>
+/* Layout: one column workbook with three tabs; exercise cards pair a pose figure with a hold timer */
+:root{
+  --bg:#F2F6F7; --surface:#FFFFFF; --surface2:#E6EEF0; --ink:#15252B; --muted:#53666D; --line:#CFDCE0;
+  --accent:#0B7A85; --accent-ink:#FFFFFF; --accent-soft:#D5ECEE;
+  --warn:#8A5200; --warn-soft:#FBEBCF; --danger:#B3261E; --danger-soft:#FBE3E1;
+  --fig:#2B4A52; --fig-soft:#9DB8BE;
+  --font-display:'Prompt','IBM Plex Sans Thai',system-ui,sans-serif;
+  --font-body:'IBM Plex Sans Thai',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1A1E; --surface:#16262B; --surface2:#1D3238; --ink:#E4EEF0; --muted:#9AB0B6; --line:#2C444B;
+    --accent:#4FC3CE; --accent-ink:#06262A; --accent-soft:#16373C;
+    --warn:#F2B35A; --warn-soft:#3A2C12; --danger:#FF8A80; --danger-soft:#3E1B19;
+    --fig:#BFD6DB; --fig-soft:#4E6A71; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1A1E; --surface:#16262B; --surface2:#1D3238; --ink:#E4EEF0; --muted:#9AB0B6; --line:#2C444B;
+  --accent:#4FC3CE; --accent-ink:#06262A; --accent-soft:#16373C;
+  --warn:#F2B35A; --warn-soft:#3A2C12; --danger:#FF8A80; --danger-soft:#3E1B19;
+  --fig:#BFD6DB; --fig-soft:#4E6A71; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{
+  background:var(--bg); color:var(--ink); font-family:var(--font-body); font-size:16px; line-height:1.7;
+  padding-block:20px 56px;
+  padding-left:max(16px,env(safe-area-inset-left,0px)); padding-right:max(16px,env(safe-area-inset-right,0px));
+}
+.wrap{max-width:880px;margin:0 auto}
+h1,h2,h3{font-family:var(--font-display);font-weight:600;line-height:1.3;text-wrap:balance;margin:0}
+h1{font-size:clamp(1.7rem,5.5vw,2.4rem)}
+h2{font-size:1.3rem}
+h3{font-size:1.1rem}
+p{margin:0}
+.lead{color:var(--muted);margin-top:8px;max-width:60ch}
+.eyebrow{font-size:.8rem;letter-spacing:.08em;color:var(--accent);font-weight:600;margin-bottom:6px}
+
+.today{margin-top:20px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:10px}
+.today-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.today-top strong{font-family:var(--font-display);font-size:1.05rem}
+.today-top span{color:var(--muted);font-size:.92rem;font-variant-numeric:tabular-nums}
+.meter{height:10px;background:var(--surface2);border-radius:99px;overflow:hidden}
+.meter i{display:block;height:100%;width:0;background:var(--accent);border-radius:99px;transition:width .4s ease}
+
+.tabs{display:flex;gap:4px;margin-top:24px;border-bottom:1px solid var(--line);overflow-x:auto}
+.tab{appearance:none;background:none;border:0;border-bottom:3px solid transparent;color:var(--muted);font:500 1rem var(--font-body);padding:10px 14px;cursor:pointer;white-space:nowrap}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent);font-weight:600}
+.tab:hover{color:var(--ink)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+.panel{padding-top:22px;display:grid;gap:18px}
+
+.note{background:var(--warn-soft);color:var(--ink);border-radius:12px;padding:12px 14px;font-size:.95rem}
+.note b{color:var(--warn)}
+
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,390px),1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:12px;min-width:0}
+.card-head{display:grid;grid-template-columns:104px 1fr;gap:14px;align-items:center}
+.fig{background:var(--surface2);border-radius:12px;aspect-ratio:1;width:104px}
+.fig svg{display:block;width:100%;height:100%}
+.en{color:var(--muted);font-size:.85rem}
+.dose{display:inline-block;margin-top:6px;background:var(--accent-soft);color:var(--ink);border-radius:99px;padding:2px 10px;font-size:.85rem;font-weight:500}
+.card ol{margin:0;padding-left:1.3em;display:grid;gap:4px;font-size:.96rem}
+.feel{font-size:.9rem;color:var(--muted)}
+.feel b{color:var(--ink)}
+.side{font-size:.9rem;color:var(--accent);font-weight:600}
+.row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.go{position:relative;overflow:hidden;appearance:none;border:0;border-radius:10px;background:var(--accent);color:var(--accent-ink);font:600 .98rem var(--font-body);padding:10px 18px;cursor:pointer;min-height:44px}
+.go:disabled{cursor:progress}
+.go .bar{position:absolute;inset:0 auto 0 0;width:0;background:rgba(255,255,255,.28)}
+.go .lbl{position:relative}
+.dots{display:flex;flex-wrap:wrap;gap:5px;flex:1;min-width:0}
+.dots i{width:12px;height:12px;border-radius:50%;border:2px solid var(--line);background:transparent}
+.dots i.on{background:var(--accent);border-color:var(--accent)}
+.count{font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums}
+
+/* pose motion: elements with .mv move to their end pose while the card is active */
+.mv{transform:var(--start,none);transform-box:view-box;transition:transform 1.1s ease-in-out}
+.card.active .mv{transform:var(--end,none)}
+.card.active.alt .mv{transform:var(--end2,var(--end,none))}
+@media (prefers-reduced-motion: reduce){.mv,.meter i{transition:none}}
+
+.plan{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr))}
+.plan div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:.92rem}
+.plan b{display:block;font-family:var(--font-display);font-size:.95rem;margin-bottom:2px}
+.reset{appearance:none;background:none;border:0;color:var(--muted);text-decoration:underline;font:inherit;font-size:.9rem;cursor:pointer;justify-self:start;padding:4px 0}
+
+.diagram{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px;overflow-x:auto}
+.diagram svg{display:block;width:100%;min-width:420px;height:auto}
+.diagram text{fill:var(--muted);font-family:var(--font-body);font-size:11.5px}
+.checks{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.checks label{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer}
+.checks input{width:20px;height:20px;margin-top:3px;accent-color:var(--accent);flex:none}
+.checks small{display:block;color:var(--muted);font-size:.86rem;line-height:1.5}
+.score{display:flex;gap:14px;align-items:center;background:var(--accent-soft);border-radius:12px;padding:12px 16px}
+.score strong{font-family:var(--font-display);font-size:1.6rem;font-variant-numeric:tabular-nums}
+
+.flags{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.flags li{background:var(--danger-soft);border-radius:12px;padding:12px 14px}
+.flags b{display:block}
+.stop{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.stop ul{margin:8px 0 0;padding-left:1.3em}
+footer{margin-top:28px;color:var(--muted);font-size:.85rem}
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">กระดูกคอเสื่อม · ดูแลตัวเองประจำวัน</p>
+    <h1>คู่มือดูแลกระดูกคอ</h1>
+    <p class="lead">ท่าบริหารเบา ๆ พร้อมตัวจับเวลา และเช็กลิสต์ปรับท่านั่งทำงาน สำหรับคนที่ได้รับการวินิจฉัยแล้ว</p>
+    <div class="today" aria-live="polite">
+      <div class="today-top"><strong id="todayMsg">วันนี้ยังไม่เริ่ม</strong><span id="todayNum">0 / 40 ครั้ง</span></div>
+      <div class="meter"><i id="todayBar"></i></div>
+    </div>
+  </header>
+
+  <div class="tabs" role="tablist" aria-label="หมวดคู่มือ">
+    <button class="tab" role="tab" id="t-exercises" data-tab="exercises" aria-selected="true">ท่าบริหารคอ</button>
+    <button class="tab" role="tab" id="t-posture" data-tab="posture" aria-selected="false">ท่านั่งทำงาน</button>
+    <button class="tab" role="tab" id="t-warning" data-tab="warning" aria-selected="false">สัญญาณเตือน</button>
+  </div>
+
+  <section class="panel" id="p-exercises" role="tabpanel" aria-labelledby="t-exercises">
+    <div class="note"><b>ก่อนเริ่ม</b> ทำช้า ๆ ไม่กระชากและไม่ฝืน ควรรู้สึกแค่ตึง ถ้าปวดแปลบ ชา หรือเวียนศีรษะให้หยุดทันที และถ้าแพทย์หรือนักกายภาพเคยสั่งห้ามท่าใด ให้ทำตามที่แพทย์สั่ง</div>
+    <div class="grid" id="cards"></div>
+    <h2>ตารางตลอดวัน</h2>
+    <div class="plan">
+      <div><b>ตอนเช้า</b>ดึงคางเข้า และหมุนคอเบา ๆ เพื่อคลายความฝืดหลังตื่นนอน</div>
+      <div><b>ระหว่างทำงาน</b>ทุก 30–45 นาที ลุกยืน ยืดคอและบ่าประมาณ 1 นาที</div>
+      <div><b>ช่วงเย็น</b>ดึงสะบักเข้าหากัน และยืดหน้าอกที่กรอบประตู</div>
+      <div><b>ก่อนนอน</b>ประคบอุ่น 15–20 นาทีถ้ากล้ามเนื้อตึง และเช็กความสูงหมอน</div>
+    </div>
+    <button class="reset" id="resetEx" type="button">ล้างผลของวันนี้</button>
+  </section>
+
+  <section class="panel" id="p-posture" role="tabpanel" aria-labelledby="t-posture" hidden>
+    <h2>ท่านั่งที่ลดแรงกดที่คอ</h2>
+    <div class="diagram">
+      <svg viewBox="0 0 420 270" role="img" aria-label="ภาพด้านข้างของคนนั่งทำงานในท่าที่เหมาะสม">
+        <line x1="10" y1="250" x2="410" y2="250" stroke="var(--line)" stroke-width="2"/>
+        <rect x="200" y="150" width="205" height="8" rx="2" fill="var(--fig-soft)"/>
+        <rect x="392" y="158" width="7" height="92" fill="var(--fig-soft)"/>
+        <rect x="338" y="76" width="9" height="60" rx="2" fill="var(--fig)"/>
+        <rect x="340" y="136" width="5" height="14" fill="var(--fig)"/>
+        <line x1="170" y1="76" x2="338" y2="76" stroke="var(--accent)" stroke-width="2" stroke-dasharray="5 4"/>
+        <line x1="175" y1="52" x2="333" y2="52" stroke="var(--muted)" stroke-width="1.5"/>
+        <path d="M175 47 l-6 5 l6 5 M333 47 l6 5 l-6 5" fill="none" stroke="var(--muted)" stroke-width="1.5"/>
+        <text x="254" y="44" text-anchor="middle">ห่างจากจอ 50–70 ซม.</text>
+        <text x="250" y="70">ขอบบนจอ = ระดับสายตา</text>
+        <path d="M108 200 L192 200" stroke="var(--fig-soft)" stroke-width="8" stroke-linecap="round"/>
+        <path d="M108 200 L108 132" stroke="var(--fig-soft)" stroke-width="8" stroke-linecap="round"/>
+        <path d="M150 99 L146 124" stroke="var(--fig)" stroke-width="12" stroke-linecap="round"/>
+        <path d="M146 124 L140 190" stroke="var(--fig)" stroke-width="22" stroke-linecap="round"/>
+        <path d="M140 192 L215 192 L218 244 L240 247" fill="none" stroke="var(--fig)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M146 130 L148 168 L200 153" fill="none" stroke="var(--fig)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="152" cy="78" r="20" fill="var(--fig)"/>
+        <text x="20" y="128">หลังพิงพนัก</text>
+        <text x="20" y="143">รองรับหลังส่วนล่าง</text>
+        <text x="30" y="180">ข้อศอก</text>
+        <text x="30" y="195">งอ ≈ 90°</text>
+        <text x="236" y="236">เท้าวางราบ</text>
+      </svg>
+    </div>
+    <h2>เช็กท่านั่งของคุณ</h2>
+    <ul class="checks" id="checks"></ul>
+    <div class="score" aria-live="polite"><strong id="scoreNum">0/7</strong><span id="scoreMsg"></span></div>
+  </section>
+
+  <section class="panel" id="p-warning" role="tabpanel" aria-labelledby="t-warning" hidden>
+    <h2>ควรพบแพทย์โดยเร็ว ถ้ามี</h2>
+    <ul class="flags">
+      <li><b>ชาหรืออ่อนแรงที่แขนและมือ</b>ถือของหลุดมือบ่อย กลัดกระดุมหรือเขียนหนังสือลำบากขึ้น</li>
+      <li><b>เดินเซ ขาไม่มีแรง ทรงตัวไม่ดี</b>อาจเป็นสัญญาณว่าไขสันหลังถูกกดทับ</li>
+      <li><b>ปวดร้าวลงแขนรุนแรง</b>หรือปวดไม่ดีขึ้นหลังดูแลตัวเอง 4–6 สัปดาห์</li>
+      <li><b>กลั้นปัสสาวะหรืออุจจาระไม่อยู่</b>ควรไปโรงพยาบาลทันที</li>
+    </ul>
+    <div class="stop">
+      <h3>หยุดทำท่าบริหารทันที ถ้า</h3>
+      <ul>
+        <li>ปวดแปลบ หรือปวดร้าวลงแขนมากขึ้น</li>
+        <li>ชาปลายนิ้วเพิ่มขึ้นระหว่างทำท่า</li>
+        <li>เวียนศีรษะ หน้ามืด หรือมองเห็นผิดปกติ</li>
+      </ul>
+    </div>
+    <div class="stop">
+      <h3>ไปพบใคร</h3>
+      <p style="margin-top:6px">แพทย์ออร์โธปิดิกส์ หรือแพทย์เวชศาสตร์ฟื้นฟู จะประเมินจากอาการและภาพถ่ายรังสีหรือ MRI ส่วนนักกายภาพบำบัดช่วยออกแบบท่าที่เหมาะกับระดับความเสื่อมของคุณ</p>
+    </div>
+  </section>
+
+  <footer>ข้อมูลนี้เป็นแนวทางทั่วไป ไม่ใช่การวินิจฉัยหรือคำสั่งการรักษา ปรึกษาแพทย์หรือนักกายภาพบำบัดก่อนเริ่มโปรแกรมใหม่</footer>
+</div>
+
+<script>
+(function(){
+  var SHOULDER='<path d="M10 120 C10 98 32 92 52 90 L68 90 C88 92 110 98 110 120 Z" fill="var(--fig-soft)"/>';
+  var NECK='<rect x="53" y="64" width="14" height="30" rx="6" fill="var(--fig)"/>';
+  function front(headStyle,extra){
+    return '<svg viewBox="0 0 120 120" aria-hidden="true">'+SHOULDER+NECK+
+      '<g class="mv" style="transform-origin:60px 86px;'+headStyle+'"><ellipse cx="60" cy="42" rx="18" ry="23" fill="var(--fig)"/>'+(extra||'')+'</g></svg>';
+  }
+  var SVG={
+    chin:'<svg viewBox="0 0 120 120" aria-hidden="true"><path d="M30 122 C30 100 52 94 70 92 L96 92 C108 96 112 108 112 122Z" fill="var(--fig-soft)"/><rect x="58" y="62" width="14" height="34" rx="6" fill="var(--fig)"/><line x1="66" y1="8" x2="66" y2="100" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="3 3"/><g class="mv" style="--start:translate(-10px,0);--end:translate(2px,0)"><ellipse cx="64" cy="44" rx="20" ry="22" fill="var(--fig)"/><path d="M44 46 l-7 5 l7 3z" fill="var(--fig)"/></g></svg>',
+    trap:front('--end:rotate(-24deg);--end2:rotate(24deg)'),
+    lev:front('--end:rotate(-22deg) translate(-2px,5px);--end2:rotate(22deg) translate(2px,5px)'),
+    scap:'<svg viewBox="0 0 120 120" aria-hidden="true"><path d="M26 120 L30 92 C44 88 76 88 90 92 L94 120Z" fill="var(--fig-soft)"/>'+NECK+'<ellipse cx="60" cy="42" rx="18" ry="23" fill="var(--fig)"/><circle class="mv" cx="28" cy="98" r="12" fill="var(--fig)" style="--end:translate(9px,2px)"/><circle class="mv" cx="92" cy="98" r="12" fill="var(--fig)" style="--end:translate(-9px,2px)"/></svg>',
+    chest:'<svg viewBox="0 0 120 120" aria-hidden="true"><rect x="30" y="8" width="6" height="108" fill="var(--line)"/><g class="mv" style="transform-origin:70px 116px;--end:rotate(-9deg)"><path d="M70 50 L70 114" stroke="var(--fig-soft)" stroke-width="20" stroke-linecap="round"/><ellipse cx="70" cy="28" rx="14" ry="17" fill="var(--fig)"/><path d="M66 54 L38 50 L38 24" stroke="var(--fig)" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g></svg>',
+    rot:front('','<path class="mv" d="M60 40 l-4 12 h8z" fill="var(--surface2)" style="--end:translate(11px,0);--end2:translate(-11px,0)"/>')
+  };
+
+  var EX=[
+    {id:'chin',name:'ดึงคางเข้า',en:'Chin tuck',hold:5,target:10,dose:'ค้าง 5 วินาที × 10 ครั้ง',
+      steps:['นั่งหรือยืนหลังตรง มองตรงไปข้างหน้า','ดึงคางเข้าหาลำคอ โดยไม่ก้มหน้าและไม่เงยหน้า','ค้างไว้ แล้วคลายช้า ๆ'],
+      feel:'ควรรู้สึกตึงเบา ๆ ที่ต้นคอด้านหลัง'},
+    {id:'trap',name:'ยืดคอด้านข้าง',en:'Upper trapezius stretch',hold:20,target:4,dose:'ค้าง 20 วินาที × ข้างละ 2 ครั้ง',side:true,sideVerb:'เอียงไป',
+      steps:['นั่งหลังตรง มือข้างหนึ่งจับขอบเก้าอี้','เอียงศีรษะช้า ๆ ให้หูเข้าใกล้ไหล่ โดยไม่ยกไหล่ตาม','ค้างไว้ แล้วสลับข้าง'],
+      feel:'ควรรู้สึกตึงที่ด้านข้างคอและบ่า ไม่ใช่ปวดแปลบหรือชา'},
+    {id:'lev',name:'ยืดมุมคอด้านหลัง',en:'Levator scapulae stretch',hold:20,target:4,dose:'ค้าง 20 วินาที × ข้างละ 2 ครั้ง',side:true,sideVerb:'ก้มเฉียงไป',
+      steps:['นั่งหลังตรง หันหน้าเฉียงลงไปทางรักแร้','วางมือบนศีรษะ ใช้น้ำหนักมือเบา ๆ ไม่ดึงแรง','ค้างไว้ แล้วสลับข้าง'],
+      feel:'ควรรู้สึกตึงตรงมุมคอด้านหลังต่อเนื่องถึงสะบัก'},
+    {id:'scap',name:'ดึงสะบักเข้าหากัน',en:'Scapular squeeze',hold:5,target:10,dose:'ค้าง 5 วินาที × 10 ครั้ง',
+      steps:['นั่งหรือยืนตัวตรง แขนวางข้างลำตัว','ดึงสะบักทั้งสองเข้าหากันและกดลงเล็กน้อย เหมือนหนีบดินสอไว้ระหว่างสะบัก','ค้างไว้ แล้วคลาย โดยไม่ยกไหล่ขึ้นหู'],
+      feel:'ควรรู้สึกเมื่อยเบา ๆ ที่กลางหลังส่วนบน'},
+    {id:'chest',name:'ยืดหน้าอกที่กรอบประตู',en:'Doorway chest stretch',hold:30,target:2,dose:'ค้าง 30 วินาที × 2 ครั้ง',
+      steps:['วางปลายแขนทาบกรอบประตู ข้อศอกงอ 90°','ก้าวขาข้างหนึ่งไปข้างหน้า','โน้มตัวผ่านประตูเบา ๆ จนรู้สึกตึงหน้าอก'],
+      feel:'ควรรู้สึกตึงที่หน้าอกและหน้าไหล่ ไม่ปวดแปลบที่ไหล่'},
+    {id:'rot',name:'หันคอช้า ๆ',en:'Gentle neck rotation',hold:3,target:10,dose:'ค้าง 3 วินาที × ข้างละ 5 ครั้ง',side:true,sideVerb:'หันไป',
+      steps:['นั่งหลังตรง มองตรงไปข้างหน้า','หันหน้าไปด้านหนึ่งช้า ๆ เท่าที่สบาย ไม่ฝืนและไม่เงยหน้า','ค้างไว้ กลับมามองตรง แล้วสลับข้าง'],
+      feel:'ควรรู้สึกตึงเล็กน้อย ถ้าเวียนศีรษะหรือชาให้หยุดทันที'}
+  ];
+  var TOTAL=EX.reduce(function(a,e){return a+e.target},0);
+  document.getElementById('todayNum').textContent='0 / '+TOTAL+' ครั้ง';
+
+  function lsGet(k){try{return JSON.parse(localStorage.getItem(k))||{}}catch(e){return {}}}
+  function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+  var d=new Date();
+  var KEY='neck-ex-'+d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+  var state=lsGet(KEY);
+
+  function sideText(ex){
+    var n=state[ex.id]||0;
+    var dir=(n%2===0)?'ซ้าย':'ขวา';
+    return '<p class="side" data-side="'+ex.id+'">รอบถัดไป: '+ex.sideVerb+'ทาง'+dir+'</p>';
+  }
+  function dotsHtml(ex){
+    var n=state[ex.id]||0,h='';
+    for(var i=0;i<ex.target;i++){h+='<i class="'+(i<n?'on':'')+'"></i>'}
+    return h;
+  }
+  function btnLabel(ex){
+    var n=state[ex.id]||0;
+    return n>=ex.target?'ครบแล้ว ทำเพิ่มได้':'เริ่มค้าง '+ex.hold+' วินาที';
+  }
+  function cardHtml(ex){
+    var n=state[ex.id]||0;
+    return '<article class="card" id="card-'+ex.id+'">'+
+      '<div class="card-head"><div class="fig">'+SVG[ex.id]+'</div><div><h3>'+ex.name+'</h3><p class="en">'+ex.en+'</p><span class="dose">'+ex.dose+'</span></div></div>'+
+      '<ol>'+ex.steps.map(function(s){return '<li>'+s+'</li>'}).join('')+'</ol>'+
+      '<p class="feel"><b>ความรู้สึกที่ถูกต้อง</b> '+ex.feel.replace('ควรรู้สึก','')+'</p>'+
+      (ex.side?sideText(ex):'')+
+      '<div class="row"><button class="go" type="button" data-go="'+ex.id+'"><span class="bar"></span><span class="lbl">'+btnLabel(ex)+'</span></button>'+
+      '<div class="dots" data-dots="'+ex.id+'">'+dotsHtml(ex)+'</div><span class="count" data-count="'+ex.id+'">'+n+'/'+ex.target+'</span></div>'+
+      '</article>';
+  }
+  function renderCards(){document.getElementById('cards').innerHTML=EX.map(cardHtml).join('')}
+
+  function updateProgress(){
+    var done=EX.reduce(function(a,e){return a+Math.min(state[e.id]||0,e.target)},0);
+    var pct=Math.round(done/TOTAL*100);
+    document.getElementById('todayBar').style.width=pct+'%';
+    document.getElementById('todayNum').textContent=done+' / '+TOTAL+' ครั้ง';
+    var m='วันนี้ยังไม่เริ่ม';
+    if(done>0&&done<TOTAL)m='กำลังไปได้ดี ทำต่ออีกนิด';
+    if(done>=TOTAL)m='ครบโปรแกรมของวันนี้แล้ว';
+    document.getElementById('todayMsg').textContent=m;
+  }
+  function refreshCard(ex){
+    var n=state[ex.id]||0;
+    var c=document.getElementById('card-'+ex.id);
+    c.querySelector('[data-dots]').innerHTML=dotsHtml(ex);
+    c.querySelector('[data-count]').textContent=n+'/'+ex.target;
+    c.querySelector('.lbl').textContent=btnLabel(ex);
+    var s=c.querySelector('[data-side]');
+    if(s)s.outerHTML=sideText(ex);
+  }
+
+  var timer=null;
+  function startHold(id){
+    if(timer)return;
+    var ex=EX.filter(function(e){return e.id===id})[0];
+    var card=document.getElementById('card-'+id);
+    var btn=card.querySelector('.go'),bar=btn.querySelector('.bar'),lbl=btn.querySelector('.lbl');
+    var n=state[id]||0,left=ex.hold;
+    card.classList.toggle('alt',!!ex.side&&n%2===1);
+    card.classList.add('active');
+    btn.disabled=true;
+    lbl.textContent='ค้างไว้ '+left+' วินาที';
+    bar.style.transition='none';bar.style.width='0%';
+    void bar.offsetWidth;
+    bar.style.transition='width '+ex.hold+'s linear';bar.style.width='100%';
+    timer=setInterval(function(){
+      left--;
+      if(left>0){lbl.textContent='ค้างไว้ '+left+' วินาที';return}
+      clearInterval(timer);timer=null;
+      state[id]=n+1;lsSet(KEY,state);
+      card.classList.remove('active');
+      bar.style.transition='none';bar.style.width='0%';
+      btn.disabled=false;
+      refreshCard(ex);updateProgress();
+    },1000);
+  }
+  document.getElementById('cards').addEventListener('click',function(e){
+    var b=e.target.closest('[data-go]');
+    if(b)startHold(b.getAttribute('data-go'));
+  });
+  document.getElementById('resetEx').addEventListener('click',function(){
+    if(timer)return;
+    state={};lsSet(KEY,state);renderCards();updateProgress();
+  });
+
+  /* posture checklist */
+  var CHECKS=[
+    ['ขอบบนจออยู่ระดับสายตา','ถ้าจอต่ำ ให้ยกด้วยหนังสือหรือขาตั้งจอ'],
+    ['จออยู่ห่างประมาณ 50–70 ซม.','ประมาณหนึ่งช่วงแขน'],
+    ['หลังพิงพนัก และหลังส่วนล่างมีที่รองรับ','ใช้หมอนเล็กหรือผ้าม้วนรองได้'],
+    ['ข้อศอกงอประมาณ 90° และไหล่ไม่ยก','วางคีย์บอร์ดและเมาส์ให้ชิดตัว'],
+    ['เท้าวางราบบนพื้นหรือที่วางเท้า',''],
+    ['ยกมือถือขึ้นระดับสายตา ไม่ก้มคอมอง','จำกัดการก้มคอต่อเนื่องไม่เกิน 20 นาที'],
+    ['ลุกเปลี่ยนท่าทุก 30–45 นาที','ตั้งเตือนในมือถือไว้ช่วยได้']
+  ];
+  var PK='neck-pos',pos=lsGet(PK);
+  function renderChecks(){
+    document.getElementById('checks').innerHTML=CHECKS.map(function(c,i){
+      return '<li><label for="ck'+i+'"><input type="checkbox" id="ck'+i+'" data-ck="'+i+'"'+(pos[i]?' checked':'')+'><span>'+c[0]+(c[1]?'<small>'+c[1]+'</small>':'')+'</span></label></li>';
+    }).join('');
+    updateScore();
+  }
+  function updateScore(){
+    var n=0;for(var i=0;i<CHECKS.length;i++){if(pos[i])n++}
+    document.getElementById('scoreNum').textContent=n+'/'+CHECKS.length;
+    var m='ติ๊กข้อที่คุณทำได้แล้ว';
+    if(n>0&&n<4)m='เริ่มจากข้อที่แก้ง่ายที่สุดก่อน เช่น ยกมือถือขึ้นระดับสายตา';
+    if(n>=4&&n<CHECKS.length)m='ใกล้ครบแล้ว ลองแก้ข้อที่เหลือทีละข้อ';
+    if(n===CHECKS.length)m='ท่านั่งของคุณครบทุกข้อ รักษาไว้และอย่าลืมลุกบ่อย ๆ';
+    document.getElementById('scoreMsg').textContent=m;
+  }
+  document.getElementById('checks').addEventListener('change',function(e){
+    var i=e.target.getAttribute('data-ck');
+    if(i===null)return;
+    pos[i]=e.target.checked;lsSet(PK,pos);updateScore();
+  });
+
+  /* tabs */
+  var TABS=['exercises','posture','warning'];
+  function showTab(name){
+    if(TABS.indexOf(name)<0)name='exercises';
+    TABS.forEach(function(t){
+      document.getElementById('p-'+t).hidden=(t!==name);
+      document.getElementById('t-'+t).setAttribute('aria-selected',t===name?'true':'false');
+    });
+  }
+  document.querySelector('.tabs').addEventListener('click',function(e){
+    var b=e.target.closest('[data-tab]');
+    if(!b)return;
+    var name=b.getAttribute('data-tab');
+    showTab(name);
+    try{history.replaceState(null,'','#'+name)}catch(x){location.hash=name}
+  });
+  window.addEventListener('hashchange',function(){showTab(location.hash.replace('#',''))});
+
+  renderCards();renderChecks();updateProgress();
+  showTab(location.hash.replace('#',''));
+})();
+</script>
+
+</body>
+</html>
